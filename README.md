@@ -6,7 +6,7 @@ Version : 20210124
       - Port David's sketch to ATtiny13 
       - Add some fetures
           - DeepSleep
-          - Init value of LEDS
+          - Random/Last init value of LEDs
           - Time limit for the solution
           - Bargraph
 
