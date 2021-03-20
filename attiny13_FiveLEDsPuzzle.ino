@@ -9,11 +9,11 @@
  *      - Port David's sketch to ATtiny13 
  *      - Add some fetures
  *          - DeepSleep
- *          - Init value of LEDS
+ *          - Random/Last init value of LEDs
  *          - Time limit for the solution
- *          - Bargraph
+ *          - Bargraph at Start
  *          
- *   Arduino IDE settings:
+ *   Arduino IDE settings [Microcore]:
  *          - ATtiny13
  *          - 128kHz internal
  *          - LTO enabled
@@ -128,14 +128,14 @@ void inic(void) {
   _delay_ms(10);
   bargraph_L();
 // 0b - beacuse i want see switch position
-  limit = ((PINB & 0b00010000) == 0);                                        // Button 4: time limit [timeout] for find the solution
-  if      ((PINB & 0b00001000) == 0){Timeout = 30000;}                       // Button 3: longer timeout/limit 
-  if      ((PINB & 0b00000100) == 0){Timeout = 10000;}                       // Button 3: longer timeout/limit 
-  if      ((PINB & 0b00000010) == 0){ddrb_init = ((millis() / 100) & 0x1F);  // Button 2: pseudo ranodom LEDs value
-  }else if((PINB & 0b00000001) == 0){ddrb_init = ddr;                        // Button 5: last LEDs value
+  limit = ((PINB & 0b00010000) == 0);                                        // Button 5: time limit [timeout] for find the solution, Default=15000 [15sec]
+  if      ((PINB & 0b00001000) == 0){Timeout = 30000;}                       // Button 4: longer timeout/limit [30sec]
+  if      ((PINB & 0b00000100) == 0){Timeout = 10000;}                       // Button 3: longer timeout/limit [10sec]
+  if      ((PINB & 0b00000010) == 0){ddrb_init = ((millis() / 100) & 0x1F);  // Button 2: pseudo random LEDs value
+  }else if((PINB & 0b00000001) == 0){ddrb_init = ddr;                        // Button 1: last LEDs value
                                }else{ddrb_init = 0;}                         // zero LEDS value - default
   bargraph_R();
-  DIDR0 = dir; 
+  DIDR0 = 0; 
   DDRB = ddrb_init;
   PORTB = 0;  
   Start = millis();
