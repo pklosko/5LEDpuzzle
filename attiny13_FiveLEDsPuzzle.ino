@@ -1,9 +1,9 @@
 /**
  * 
- * Five LEDs Puzzle 
+ * Five LED Puzzle 
  * 
- * see https://www.klosko.net/blog/=article=
- * Petr KLOSKO - www.klosko.net - 24th January 2021
+ * see https://www.klosko.net/blog/=clanek=5-led-puzzle
+ * Petr KLOSKO - www.klosko.net - 27th March 2021
  * 
  * Version : 20210124
  *      - Port David's sketch to ATtiny13 
@@ -29,7 +29,7 @@
  * http://creativecommons.org/licenses/by/4.0/
  * 
  * Oringinal puzzle sketch sketch & schematics : 
- * Five LEDs Puzzle v4 - see http://www.technoblogy.com/show?3D8S
+ * Five LEDs Puzzle v5 - see http://www.technoblogy.com/list?3E9T
  * David Johnson-Davies - www.technoblogy.com - 9th January 2021
  * ATtiny85 @ 1 MHz (internal oscillator; BOD disabled)
 */
@@ -56,20 +56,6 @@ volatile uint8_t dir __attribute__((section(".noinit")));
 ISR (INT0_vect) {
   GIMSK &= ~(1<<INT0);                    // Disable Pin Change Interrupts
   inic();
-}
-
-// Calculate CRC - based on Dallas crc8 code
-static inline uint8_t _crc8(uint8_t crc, uint8_t data){
-  uint8_t i;
-  crc = crc ^ data;
-  for (i = 0; i < 8; i++) {
-    if (crc & 0x01) {
-      crc = (crc >> 1) ^ 0x8C;
-    } else {
-      crc >>= 1;
-    }
-  }
-  return crc;
 }
 
 void bargraph_L(){
@@ -130,10 +116,10 @@ void inic(void) {
 // 0b - beacuse i want see switch position
   limit = ((PINB & 0b00010000) == 0);                                        // Button 5: time limit [timeout] for find the solution, Default=15000 [15sec]
   if      ((PINB & 0b00001000) == 0){Timeout = 30000;}                       // Button 4: longer timeout/limit [30sec]
-  if      ((PINB & 0b00000100) == 0){Timeout = 10000;}                       // Button 3: longer timeout/limit [10sec]
+  if      ((PINB & 0b00000100) == 0){Timeout = 10000;}                       // Button 3: shorter timeout/limit [10sec]
   if      ((PINB & 0b00000010) == 0){ddrb_init = ((millis() / 100) & 0x1F);  // Button 2: pseudo random LEDs value
   }else if((PINB & 0b00000001) == 0){ddrb_init = ddr;                        // Button 1: last LEDs value
-                               }else{ddrb_init = 0;}                         // zero LEDS value - default
+                               }else{ddrb_init = 0;}                         // No LED On - default
   bargraph_R();
   DIDR0 = 0; 
   DDRB = ddrb_init;
