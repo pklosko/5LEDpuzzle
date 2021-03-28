@@ -1,6 +1,8 @@
 # 5LEDpuzzle
 Attiny13 port of David Johnson-Davies's LED puzzle algo 
 
+Project web> https://www.klosko.net/blog/=clanek=5-led-puzzle
+
 Version : 20210124
 
       - Port David's sketch to ATtiny13 
